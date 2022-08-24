@@ -2,7 +2,6 @@ Week 2: Climate analysis
 ========================================================
 author: Dr. Glover
 date: August 24, 2022
-autosize: true
 
 Learning objectives
 ========================================================
@@ -23,10 +22,603 @@ What is R?
 - The R software interprets the R language.
 - R uses *packages*, which are sets of functions that can be run in R, which usually have a very specific purpose
 
+What is Rstudio?
+========================================================
+Rstudio is software that runs the R software in a user friendly format. Rstudio allows the user to run R code, take notes, view graphs, and view files in one window.
 
-Slide With Plot
+![Rstudio](Rstudio.png)
+
+
+Mathematical calculations
 ========================================================
 
-```{r, echo=FALSE}
-plot(cars)
+R can perform basic mathematical calculations. To compute a calculations, simply type it in the *Console*. 
+
+- addition (+)
+- subtraction (-)
+- multiplication (\*)
+- division (/)
+- power (\^)
+
+Math example
+========================================================
+For example for 5 times 2:
+
+```{r}
+5 * 2
 ```
+
+**One your own, try some mathematical calculations in the Console.**
+
+Functions in R
+========================================================
+
+Most tasks in R will be accomplished using **functions**. Functions is code that is stored in R and will run a specific task.
+
+![Functions](function.png)
+
+Functions
+========================================================
+Functions can range from very simple to very complex. 
+
+- Many functions exist in R without doing anything
+- Some are in packages you can "load"
+- You can even make your own functions.
+
+
+Function example
+========================================================
+
+ `log` is a function that will take the natural log of the value given as an argument.
+
+```{r}
+log(1.5)
+```
+
+Function example
+========================================================
+
+Arguments
+
+- x 
+- base
+
+```{r}
+log(1.5, 10)
+```
+
+OR 
+
+```{r}
+log(x=1.5, base =10)
+```
+
+Functions
+========================================================
+There are many other mathematical function such as:
+
+- sum
+- max
+- min
+- mean
+- median
+- sd (standard deviation). 
+
+You the ? to get help on packages
+
+Assigning variables
+========================================================
+
+In R, you can store information (numbers, tables, text, etc.) in variables. 
+
+Use the characters `<-`
+
+```{r}
+a <- 1.5
+```
+
+Assigning variables
+========================================================
+
+Then, when you run `a`, you can see the value.
+
+```{r,}
+a
+```
+
+You can now treat `a` as 1.5. For example, you can take the log of `a`, which is the same as running `log(1.5)`
+
+```{r}
+log(a)
+```
+
+Data types
+========================================================
+
+R can handle **numbers** or **text.** 
+
+- With numbers, you can type them in regularly and R will recognize them as such. 
+- Text is put into quotations ("").
+
+Data types
+========================================================
+
+For example, instead of a number, you can store text in a variable:
+
+```{r}
+b <- "hello"
+```
+
+Then when your run the varable `b`, you get the text as the output.
+
+```{r}
+b
+```
+
+There are other types of data, but numbers (numberic) and text (characters) are the two main types we will use in this class.
+
+Data structures
+========================================================
+
+Data can be stored in vectors, data frames, and matrices.
+
+- **Vectors** are a one dimensional way to put together data of the *same* type (i.e. all text or all characters). 
+- The most common way to create a vectors is by using the `c()` function, which concatenates values.
+
+
+```{r}
+example.vector <- c(5, 10, 20)
+example.vector
+```
+
+Data structures
+========================================================
+
+You can also perform mathematical calculations or functions with vectors. The function is performed on each entry in the vector
+
+```{r}
+example.vector / 5
+```
+
+Data frames
+========================================================
+
+- **Data frames** are are lists of vectors, like a table. 
+- In data frames, each column must have the same data type, but there can be different types of data in a data frame. 
+
+This is widely used for storing data because you can have a column with the treatment name (text) and then a column of the measurement (number).
+
+
+Data frames
+========================================================
+
+```{r, echo=F}
+treatment <- c('control', 'control', 'control', 'high N', 'high N', 'high N', 'low N', 'low N', 'low N' )
+growth <- c(5, 8, 6, 1, 8, 9, 5, 2,3)
+df<- data.frame(treatment, growth)
+df
+```
+
+
+Data structures
+========================================================
+
+A **matrix** is similar to a data frame except that *all data* in a matrix are the same type.
+
+Using R script
+========================================================
+
+It is best to write and run code from an R *script*. 
+
+In a script, you can:
+- take notes
+- write code
+- run code 
+
+You can also save the file and re-run or go back and edit later. This is very important for reproducibility and accountability in science.
+
+Using R script
+========================================================
+
+![Rstudio with script](R-studio-notebook.png)
+
+Using R script
+========================================================
+
+-   To add notes, add a '\#' to the beginning of a line. This line will not be run in R.
+-   To run the code from the notebook, but your cursor on the line that you want to run. Then click "Ctrl + enter" on a Windows or Linux machine or 'Cmd + enter' on a Mac.
+
+
+Exercise 1: Class height
+========================================================
+
+Use **climate-script.R** that is provided to you on Moodle.
+
+In this exercise:
+
+1.  Collect the heights of each of the students in the class in inches
+2.  Store the heights in a vector
+3.  Calculate some summary statistics on the height of the class (ex. median, maximum, etc.)
+4.  Plot a histogram of the heights. To make a histogram, you can use the function `hist`. You can look at the documentation for the function using `?hist`. Notice where the histogram is displayed in Rstudio.
+
+Climate data analysis
+====
+
+In the second part of the lab, we will use climate data from the [PRISM climate group](https://prism.oregonstate.edu/) to create Walter's climate diagrams. 
+
+The data sets include:
+- total precipitation
+- maximum temperature
+- minimum temperature
+- mean temperature
+- dew point temperature
+- vapor pressure deficit
+- measurements of global shortwave solar radiation.
+
+Install required packages
+===
+
+We will be using a couple of packages for the analysis in class. To install the packages `dplyr` and `ggplot2`, use the following code.
+
+    install.packages("dplyr")
+    install.packages("ggplot2")
+
+You will only have to do this once. Now when you do analyses in the future, you will already have these packages.
+
+Loading the dataset
+===
+
+Download the data file from Moodle named **climate.csv.** 
+
+To load the data, we will use the function `read.csv`. We will name the variable in R `climate`
+
+```{r read-data}
+climate <- read.csv("climate.csv")
+```
+
+The easiest and most organized way to accomplish this is by making a folder on your computer for the analysis.
+
+View the data 
+===
+
+To view the first 10 rows of the file, run:
+
+```{r}
+head(climate, 10)
+```
+
+You can also evaluate the data using the `summary()` function.
+
+Filtering the data
+===
+
+To evaluate and manipulate the data we will use the `dplyr` package.
+
+To load the package, use the function, `library`:
+
+```{r, warning = F, message=FALSE}
+library(dplyr)
+```
+
+Filtering the data
+===
+
+One useful function in the dplyr package is `filter`. This function allows you to view only some of the data rows, or it "filters" the data by a specific. To use the `filter` function, you need 2 arguments: 1) the data you are working with and 2) how you want to filter. First, let's filter to only show data from Raleigh. The code would be:
+
+```{r filter-city}
+filter(climate, City=="Raleigh")
+```
+
+Filtering the data
+===
+
+We can also use more than one filter. 
+
+To show all data from Raleigh in 2021:
+
+```{r filter-city-year}
+filter(climate, City == "Raleigh", year == "2021")
+```
+
+Pipe function
+===
+
+One handy thing in `dplyr` is the use of the "%\>%" pipe which can be used to chain functions. The pipe uses the following format:
+
+    data %>%
+      function 1 %>%
+      function 2 %>%
+      function 3
+
+You can use as many functions as you would like. 
+
+Pipe function
+===
+
+```{r another-filter}
+climate %>%
+  filter(City == "Raleigh") %>%
+  filter(year == "2021")
+```
+
+Summarize function
+===
+
+We can also use the `summarize` function to make summary statistics for the data. 
+
+- sum
+- n
+- max
+
+Summarize function
+===
+
+1. Filter the data for Raleigh in 2021
+2. Summarize for the mean temperature and mean precipitation
+
+
+```{r summarize}
+climate %>% 
+  filter(City =="Raleigh") %>%
+  summarize(mean.temp = mean(temp), mean.precip = mean(precip))
+```
+
+Plotting the data
+===
+
+It is good practice to plot the data to evaluate it. 
+
+- We will use the package `ggplot2` to plot data. 
+- `ggplot` uses layers to plot data. 
+
+The first layer using the function `ggplot` sets up the visualization. Then additional layers are "added" on which are used to plot the data (ex. bars, points, lines) and add styles, formats, etc.
+
+Plotting temperature by month
+===
+
+```{r plot-temp, warning = F, out.width="75%"}
+library(ggplot2)  
+
+ggplot(data=climate, aes(x=month, y=temp)) +
+  geom_point()
+```
+
+Grouping the data
+===
+
+In this graph, every row in the data frame `climate` is a separate point on the plot. 
+
+For each city, instead of having a point for each year and month, we could have the *mean* temperature in each month.
+
+We will use the `summarize` function, like we used before, but in conjunction with the function `group_by`.
+
+```{r group-summarize}
+climate_sum <- climate %>%
+  group_by(City, State, month) %>%
+  summarize(mean.temp = mean(temp), mean.precip=mean(precip))
+```
+
+Grouping the data
+===
+
+```{r}
+climate_sum
+```
+
+Plot summarized temperature
+===
+
+```{r plot-mean-temp, out.width="75%"}
+ggplot(data = climate_sum, aes(x = month, y = mean.temp)) +
+  geom_point()
+```
+
+Plot summarized precipitation
+===
+
+```{r plot-mean-precip, out.width="75%"}
+ggplot(data = climate_sum, aes(x = month, y = mean.precip)) +
+  geom_point()
+```
+
+===
+
+
+\*\* What do you notice about the 2 plots?\*\*
+
+
+Formatting with color
+===
+In `ggplot`, you can also add in color to the plot. 
+
+First, you can make all the points a different color by using the argument "color" in `geom_point.`
+
+```{r red, out.width="75%"}
+ggplot(data = climate_sum, aes(x = month, y = mean.temp)) +
+  geom_point(color = 'red')
+```
+
+Formatting with color
+===
+
+You can also color based on a column in the data from by adding color = column_name in the aes in `ggplot`.
+
+Play around with the color argument in aes.
+
+    ggplot(data = climate_sum, aes(x = month, y = mean.temp, color = )) +
+      geom_point()
+
+Making a Climate Diagram for Raleigh 2021
+===
+
+In the Walter's Climate diagram, both temperature and precipitation is plotted by month.
+
+One difference here is that we moved the aesthetic for the y axis to the `geom_point`. 
+
+Plotting the climate diagram
+===
+
+```{r temp-red, out.width="75%"}
+ggplot(data = filter(climate, City == "Raleigh", year =="2021" ), aes(x=month)) +
+  geom_point(aes(y=temp), col='red')
+```
+
+Add line
+===
+
+If we want to connect the points, we can add a line using `geom_line` using the same arguments.
+
+```{r line-temp, out.width="75%"}
+ggplot(data = filter(climate, City == "Raleigh", year =="2021" ), aes(x=month)) +
+  geom_point(aes(y=temp), color='red') +
+  geom_line(aes(y=temp), color = 'red')
+```
+
+Plotting climate diagram
+===
+
+Just like we can with variables, we can assign plots to variables.
+
+```{r temp-diagram}
+temp_raleigh_21 <- ggplot(data = filter(climate, City == "Raleigh", year =="2021" ), aes(x=month)) +
+  geom_point(aes(y=temp), col='red')+
+  geom_line(aes(y=temp), col='red')
+```
+
+Plotting climate diagram
+===
+
+Because ggplot uses layers, we can simply add the precipitation values to the temperature plot.
+
+```{r climate-diagram}
+climate_raleigh_21 <- temp_raleigh_21 + 
+  geom_point(aes(y=precip), color='blue')+
+  geom_line(aes(y=precip), color='blue') +
+  scale_y_continuous( sec.axis = sec_axis(~.*2)) 
+```
+
+Plotting climate diagram
+===
+
+To view the plot, simply run the name of the plot
+
+```{r, out.width="75%"}
+climate_raleigh_21
+```
+
+And now you have your climate diagram for Raleigh in 2021!
+
+===
+
+**Evaluate the climate diagram**. Is this what you expect given the biome we are in? Is there anything unexpected?
+
+Formatting the climate diagram
+===
+
+We can change the axis labels and title for the plot and add in the month letters instead of numbers by adding additional formatting layers.
+
+```{r pretty, warning = F, out.width="75%"}
+climate_raleigh_21 +
+    scale_y_continuous('Mean Temperature (C)',  
+                       sec.axis = sec_axis(~.*2, 'Mean Precipitation (mm)')) +
+    scale_x_continuous('Month', breaks=1:12,  
+                       labels=c('J', 'F', 'M', 'A', 'M', 'J','J','A','S','O', 'N','D')) + 
+    ggtitle('Climate Diagram for Raleigh, NC') +
+    theme_bw()
+```
+
+Formatting the climate diagram
+===
+
+Here we used:
+
+-   ggtitle to add a title
+-   scale_y\_continuous to change the y axis names
+-   scale_y\_continuous to change the break points and names on the x axis
+-   theme_bw to change the theme.
+
+There are many themes you can use for ggplot inlcuding `theme_minimal`, `theme_gray`, `theme_classic`. Try out a couple to see which you prefer.
+
+Climate diagram with average data
+===
+
+Lastly, we can also plot a climate diagram using the average of all the years in the data frame instead of just one using the climate_sum data frame we created earlier.
+
+```{r sum-diagram, out.width="75%"}
+ggplot(data = filter(climate_sum, City=='Raleigh'), aes(x=month)) +
+  geom_point(aes(y=mean.temp), col='red')+
+  geom_line(aes(y=mean.temp), col='red')+
+  geom_point(aes(y=mean.precip), col = 'blue')+
+  geom_line(aes(y=mean.precip), col = 'blue')+
+  scale_y_continuous('Mean Temperature (C)',  
+                     sec.axis = sec_axis(~.*2, 'Mean Precipitation (mm)')) +
+  scale_x_continuous('Month', breaks=1:12,  
+                     labels=c('J', 'F', 'M', 'A', 'M', 'J','J','A','S','O', 'N','D')) + 
+  ggtitle('Climate Diagram for Raleigh, NC') +
+  theme_bw()
+```
+
+Save the plot
+===
+
+To save the graph, you can use the `ggsave` function. Add as an argument the name of the file.
+
+    ggsave("Raleigh_climate.pdf")
+
+Exercise 2
+===
+
+Here is a map of the cities in the data file:
+
+```{r cities, echo=FALSE, include = F, message = FALSE}
+cities<-read.csv('climate-locations.csv')
+cities <- cities %>%
+  mutate(City = recode(City, 'Ajo '= 'Ajo'))
+kableExtra::kable(cities)
+```
+
+```{r cities_map, echo = F, message=F, out.width="75%"}
+library(sf)
+library(ggrepel)
+
+usa <- st_as_sf(maps::map("state", fill=TRUE, plot =FALSE))
+
+locs <- cities %>%
+  filter(complete.cases(.)) %>% # your CSV has blank rows between the cities
+  st_as_sf(coords = c('Long', 'Lat'), crs = 4326)
+
+# I got fancy on line 14 with the ggrepel but you can get rid of that if you don't want it.
+ggplot(usa) +
+  geom_sf(color = "#2b2b2b", fill = "white", size=0.125) +
+  geom_sf(data = locs, color = "#56B4E9", size = 2) +
+  ggrepel::geom_label_repel(data = locs, aes(label = paste0(City, ', ', State), geometry = geometry), stat = 'sf_coordinates') +
+  coord_sf(crs = st_crs("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs"), datum = NA) +
+  ggthemes::theme_map()
+```
+
+
+Assignment
+===
+
+In the next part of lab, make at least **three** additional climate diagrams in R. Include your code in the climate-script.R file.
+
+1.  Why did you pick the three cities you did?
+2.  Are the diagrams you expect given the biome of the city?
+3.  How do the diagrams compare?
+4.  Are the results expected or unexpected based on what you know about the cities or climate diagrams in general?
+
+Lab notebook instructions
+=====
+
+In the lab notebook entry for this week include:
+
+-   **Objective**: Describe the goal of the lab?
+-   **Methods**: A short summary of the methods. You do not need to go through the details of all the code, but what your were aiming tplot-mean-tempo accomplish in R.
+-   **Results**: Add the climate diagrams plots to the results. You can save each of the plots with the `ggsave` function.
+-   **Conclusions**: Write up a couple of paragraphs of your conclusions for the lab. Think about the questions in exercise 2.
+-   **Questions**: What questions do you have about the lab?
+
+References
+===
+
+PRISM Climate Group, Oregon State University, <https://prism.oregonstate.edu>, data created 4 Feb 2014, accessed 13 Aug 2022.
